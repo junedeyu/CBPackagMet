@@ -198,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  计算前后一个月
  *
  *  @param date  要计算的时间
- *  @param withFlag 正数为后一个月 负数为前一个月
+ *  @param Flag 正数为后一个月 负数为前一个月
  *
  *  @return 计算后的时间
  */
@@ -254,7 +254,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  传入需要转换的时间
  *  获取的时间与现有时间的差值
- * @param time
  * @return
  */
 + (NSString *) GetTimeChange:(NSString *)TimeString;
