@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,8 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 {
     MBProgressHUD * ProgressHud;
 }
-
-@property (nonatomic , strong) NSMutableArray * goStoreUploadImgAry ;
 
 /**
  *  单利
@@ -202,7 +200,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 计算后的时间
  */
-+ (NSDate *)getPriousorLaterDateFromDate:(NSDate *)date withFlag:(int)Flag;
++ (NSDate *)getPriousorLaterDateFromDate:(NSDate *)date flag:(int)Flag;
 
 /**
  *  判断权限
@@ -256,7 +254,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  获取的时间与现有时间的差值
  * @return
  */
-+ (NSString *) GetTimeChange:(NSString *)TimeString;
++ (NSString *)GetTimeChange:(NSString *)timeStr;
 
 /**
  *  获取当前手机连接的wifi名字
@@ -316,10 +314,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  文件写入
  */
 + (BOOL)createDataBaseWithDic:(NSMutableDictionary *)dict pathComment:(NSString *)pathComment;
-/**
- *  上传巡店图片
- */
-- (void)uploadImgWithBillId:(NSString *)billId imgData:(NSArray *)imgData successHandle:(void (^)(id object))successHandle dataError:(void (^)(void))dataError;
 
 /**
  *  自定义View四个角的圆角
@@ -386,7 +380,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  结束当前所有网络请求
  */
-+ (void)breakNetWorking;
+//+ (void)breakNetWorking;
 
 /**
  * 截取背景

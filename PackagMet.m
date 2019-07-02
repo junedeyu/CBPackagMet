@@ -7,9 +7,24 @@
 //
 
 #define kScreenSizes [UIScreen mainScreen].bounds.size
+#define MBHUD_Size CGSizeMake(90., 90.)
+#define rootNavVC (UINavigationController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController]
+#define CB_KeyWindow [[[UIApplication sharedApplication] delegate] window]
+#define HWColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+#define HWColorAlp(r, g, b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
+#define kDocument_Folder [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]
+#define kUserDef [NSUserDefaults standardUserDefaults]
+
+#ifdef DEBUG
+#define CBLog(...) NSLog(__VA_ARGS__)
+#define CBMsg object[@"RetMessage"]
+#else
+#define CBLog(...)
+#endif
 
 #import "PackagMet.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import <AFNetworking/AFNetworking.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <net/if.h>
@@ -293,11 +308,11 @@ static PackagMet *_instance ;
  *  计算前后一个月
  *
  *  @param date  要计算的时间
- *  @param withFlag 正数为后一个月 负数为前一个月
+ *  @param Flag 正数为后一个月 负数为前一个月
  *
  *  @return 计算后的时间
  */
-+ (NSDate *)getPriousorLaterDateFromDate:(NSDate *)date withFlag:(int)Flag
++ (NSDate *)getPriousorLaterDateFromDate:(NSDate *)date flag:(int)Flag
 {
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setMonth:Flag];
@@ -343,7 +358,7 @@ static PackagMet *_instance ;
 
 - (void)initShowProgressHud:(UIViewController *)views
 {
-    ProgressHud.frame = CGRectMake(-60, 0, KScreenWidth, KScreenHeight + 60);
+    ProgressHud.frame = CGRectMake(-60, 0, kScreenSizes.width, kScreenSizes.height + 60);
     [views.view bringSubviewToFront:ProgressHud];
     [ProgressHud show:YES];
 }
@@ -600,7 +615,7 @@ static PackagMet *_instance ;
 // 获取分割线
 
 + (UIView *)getSeparatView:(CGFloat )yy {
-    UIView *separatView = [[UIView alloc] initWithFrame:CGRectMake(0, yy, KScreenWidth, 1)];
+    UIView *separatView = [[UIView alloc] initWithFrame:CGRectMake(0, yy, kScreenSizes.width, 1)];
     [separatView setBackgroundColor:HWColor(220, 220, 220)];
     return separatView;
 }
@@ -634,13 +649,13 @@ static PackagMet *_instance ;
     return label;
 }
 
-+ (NSString *) GetTimeChange:(NSString *)TimeString {
++ (NSString *)GetTimeChange:(NSString *)timeStr {
     
     NSDate *currentTimeDate = [NSDate date];    //  现在时间
     //获取时间
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
-    NSDate *getTimeDate = [formatter dateFromString:TimeString];
+    NSDate *getTimeDate = [formatter dateFromString:timeStr];
     
     // 现在时间 与 获取时间 之差
     long dd = (long)[currentTimeDate timeIntervalSince1970] - [getTimeDate timeIntervalSince1970];
@@ -675,7 +690,7 @@ static PackagMet *_instance ;
     }
     // 4天 < 时间差
     if (dd/86400 > 4) {
-        timeString = [TimeString substringWithRange:NSMakeRange(0, 10)];
+        timeString = [timeStr substringWithRange:NSMakeRange(0, 10)];
     }
     return timeString;
 }
@@ -697,7 +712,6 @@ static PackagMet *_instance ;
         
         if (dictRef) {
             NSDictionary *networkInfo = (__bridge NSDictionary *)dictRef;
-            CBLog(@"network info -> %@", networkInfo);
             wifiName = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeySSID];
             
             CFRelease(dictRef);
@@ -897,77 +911,6 @@ static PackagMet *_instance ;
     return dict;
 }
 
-#pragma mark -------- 单独上传图片 单独开线程
-- (void)uploadImgWithBillId:(NSString *)billId imgData:(NSArray *)imgData successHandle:(void (^)(id object))successHandle dataError:(void (^)(void))dataError
-{
-    for (NSDictionary * imageInfo in imgData)
-    {
-        [[PackagMet shareInstance] uploadFailImageWithBillId:billId imgData:imageInfo[@"image"] flag:[imageInfo[@"flag"] integerValue] successHandle:successHandle dataError:dataError];
-    }
-    // 采用队列形式上传 两个一组 将两个数组里面的图片放在一起并加上标志符判断是竞品还是展品 ，之后开始分组上传串行队列
-}
-
-- (NSMutableArray *)goStoreUploadImgAry
-{
-    if (!_goStoreUploadImgAry) {
-        _goStoreUploadImgAry = [[NSMutableArray alloc] init];
-    }
-    return _goStoreUploadImgAry;
-}
-
-// 单张上传接口
-- (void)uploadFailImageWithBillId:(NSString *)billId imgData:(UIImage *)img flag:(NSInteger)flag successHandle:(void (^)(id object))successHandle dataError:(void (^)(void))dataError
-{
-    NSMutableDictionary * allImgDatadict = [NSMutableDictionary dictionary];
-    NSMutableArray * picture = [NSMutableArray array];
-    
-    // 需遍历 录入所有Base64图片
-    NSMutableDictionary * picDic = [NSMutableDictionary dictionary];
-    [picDic setObject:billId forKey:@"BillID"];
-    [picDic setObject:@0 forKey:@"Smb_id"];
-    [picDic setObject:@0 forKey:@"UserID"];
-    [picDic setObject:@"" forKey:@"comment"];
-    NSData *_data = UIImageJPEGRepresentation(img, 0.5f);
-    NSString *imageStr = [_data base64EncodedStringWithOptions:0];
-    
-    [picDic setObject:imageStr forKey:@"Content"]; // 图片base64
-    [picDic setObject:@(flag) forKey:@"Flag"];  //  0为陈列商品 1为竞品商品
-    [picDic setObject:@"" forKey:@"Params"];
-    [picture addObject:picDic];
-    
-    [allImgDatadict setObject:picture forKey:@"BillImage"];  //图片
-    NSData *data = [NSJSONSerialization dataWithJSONObject:allImgDatadict  options:0 error:nil];
-    NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-    
-    NSMutableDictionary * parmas = [NSMutableDictionary dictionary];
-    
-    [parmas setObject:@"10101" forKey:@"BillID"];
-    [parmas setObject:@"BillImage" forKey:@"Entity"];
-    [parmas setObject:@"BillImage" forKey:@"DataType"];
-    
-    [parmas setObject:@"Save" forKey:@"Action"];
-    [parmas setObject:str forKey:@"Detail"];
-
-    [[NetWorkManager shareInstance] postMethodAddCurrentWithUrl:KpUrl(@"SetData") Parameters:parmas successHandle:^(id object)
-     {
-         CBLog(@"%s上传图片成功！",__func__);
-         successHandle(object) ;
-     } dataError:^(id object) {
-         CBLog(@"%s上传图片失败了！",__func__);
-         if (![self.goStoreUploadImgAry containsObject:img])
-         {
-             [self.goStoreUploadImgAry addObject:img];
-             [self uploadFailImageWithBillId:billId imgData:img flag:flag successHandle:nil dataError:nil];
-         }else{
-             [self.goStoreUploadImgAry removeObject:img];
-         }
-         // 通过数组存储失败的照片，第二次还是失败就不用上传该张了。
-//         dataError();
-     } errorHandle:^(NSError *error) {
-         CBLog(@"%s上传图片失败了！没网络",__func__);
-     }];
-}
-
 // 自定义View四个角的圆角
 + (void)PackViewLayerWithView:(UIView *)view byRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii
 {
@@ -1035,8 +978,7 @@ static PackagMet *_instance ;
     return [pinyin lowercaseString];
 }
 
-+ (void)getReachability
-{
++ (void)getReachability {
     // 开始网络监视器
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
@@ -1091,13 +1033,13 @@ static PackagMet *_instance ;
     return currentDeviceUUIDStr;
 }
 
-+ (void)breakNetWorking {
-    [[NetWorkManager sharedPostHTTPSession].operationQueue cancelAllOperations];
-    [[NetWorkManager sharedGetHTTPSession].operationQueue cancelAllOperations];
-    for (NSURLSessionTask * task in [NetWorkManager sharedPostHTTPSession].tasks) {
-        [task cancel];
-    }
-}
+//+ (void)breakNetWorking {
+//    [[NetWorkManager sharedPostHTTPSession].operationQueue cancelAllOperations];
+//    [[NetWorkManager sharedGetHTTPSession].operationQueue cancelAllOperations];
+//    for (NSURLSessionTask * task in [NetWorkManager sharedPostHTTPSession].tasks) {
+//        [task cancel];
+//    }
+//}
 
 // 删除沙盒里面所有的zip文件
 + (void)deleteFileManagerWithZip {
@@ -1156,11 +1098,7 @@ static PackagMet *_instance ;
 + (BOOL)allowAccessCamera {
     AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (status == AVAuthorizationStatusDenied || status == AVAuthorizationStatusRestricted) {
-        if ([iPadDev integerValue]) {
-            [PackagMet initAlertViewShowStr:@"尚未开启相机权限,请在\"设置->e小步\"中允许访问相机。"] ;
-        }else {
-            [PackagMet initAlertViewShowStr:@"尚未开启相机权限,请在\"设置->隐私->相机\"中允许访问相机。"] ;
-        }
+        [PackagMet initAlertViewShowStr:@"尚未开启相机权限,请在\"设置->隐私->相机\"中允许访问相机。"] ;
         return NO;
     }
     return YES ;
@@ -1262,78 +1200,59 @@ static PackagMet *_instance ;
     NSString *valstr=[NSString stringWithFormat:@"%.2f",numberals];
     NSString *prefix;
     NSString *suffix;
-//    if (valstr.length<=2) {
-//        prefix=@"零元";
-//        if (valstr.length==0) {
-//            suffix=@"零角零分";
-//        }
-//        else if (valstr.length==1)
-//        {
-//            suffix=[NSString stringWithFormat:@"%@分",[numberchar objectAtIndex:[valstr intValue]]];
-//        }
-//        else
-//        {
-//            NSString *head=[valstr substringToIndex:1];
-//            NSString *foot=[valstr substringFromIndex:1];
-//            suffix = [NSString stringWithFormat:@"%@角%@分",[numberchar objectAtIndex:[head intValue]],[numberchar  objectAtIndex:[foot intValue]]];
-//        }
-//    }
-//    else
-//    {
-        prefix=@"";
-        suffix=@"";
-        NSInteger flag = valstr.length - 2;
-        NSString *head=[valstr substringToIndex:flag - 1];
-        NSString *foot=[valstr substringFromIndex:flag];
-        if (head.length>13) {
-            return@"数值太大（最大支持13位整数），无法处理";
-        }
-        //处理整数部分
-        NSMutableArray *ch=[[NSMutableArray alloc]init];
-        for (int i = 0; i < head.length; i++) {
-            NSString * str=[NSString stringWithFormat:@"%x",[head characterAtIndex:i]-'0'];
-            [ch addObject:str];
-        }
-        int zeronum=0;
-        
-        for (int i=0; i<ch.count; i++) {
-            int index=(ch.count -i-1)%4;//取段内位置
-            NSInteger indexloc=(ch.count -i-1)/4;//取段位置
-            if ([[ch objectAtIndex:i]isEqualToString:@"0"]) {
-                zeronum++;
-            }
-            else
-            {
-                if (zeronum!=0) {
-                    if (index!=3) {
-                        prefix=[prefix stringByAppendingString:@"零"];
-                    }
-                    zeronum=0;
-                }
-                prefix=[prefix stringByAppendingString:[numberchar objectAtIndex:[[ch objectAtIndex:i]intValue]]];
-                prefix=[prefix stringByAppendingString:[inunitchar objectAtIndex:index]];
-            }
-            if (index ==0 && zeronum<4) {
-                prefix=[prefix stringByAppendingString:[unitname objectAtIndex:indexloc]];
-            }
-        }
-        prefix =[prefix stringByAppendingString:@"元"];
-        //处理小数位
-        if ([foot isEqualToString:@"00"]) {
-            suffix =[suffix stringByAppendingString:@"整"];
-        }
-        else if ([foot hasPrefix:@"0"])
-        {
-            NSString *footch=[NSString stringWithFormat:@"%x",[foot characterAtIndex:1]-'0'];
-            suffix=[NSString stringWithFormat:@"%@分",[numberchar objectAtIndex:[footch intValue] ]];
+    prefix=@"";
+    suffix=@"";
+    NSInteger flag = valstr.length - 2;
+    NSString *head=[valstr substringToIndex:flag - 1];
+    NSString *foot=[valstr substringFromIndex:flag];
+    if (head.length>13) {
+        return@"数值太大（最大支持13位整数），无法处理";
+    }
+    //处理整数部分
+    NSMutableArray *ch=[[NSMutableArray alloc]init];
+    for (int i = 0; i < head.length; i++) {
+        NSString * str=[NSString stringWithFormat:@"%x",[head characterAtIndex:i]-'0'];
+        [ch addObject:str];
+    }
+    int zeronum=0;
+    
+    for (int i=0; i<ch.count; i++) {
+        int index=(ch.count -i-1)%4;//取段内位置
+        NSInteger indexloc=(ch.count -i-1)/4;//取段位置
+        if ([[ch objectAtIndex:i]isEqualToString:@"0"]) {
+            zeronum++;
         }
         else
         {
-            NSString *headch=[NSString stringWithFormat:@"%x",[foot characterAtIndex:0]-'0'];
-            NSString *footch=[NSString stringWithFormat:@"%x",[foot characterAtIndex:1]-'0'];
-            suffix=[NSString stringWithFormat:@"%@角%@分",[numberchar objectAtIndex:[headch intValue]],[numberchar  objectAtIndex:[footch intValue]]];
+            if (zeronum!=0) {
+                if (index!=3) {
+                    prefix=[prefix stringByAppendingString:@"零"];
+                }
+                zeronum=0;
+            }
+            prefix=[prefix stringByAppendingString:[numberchar objectAtIndex:[[ch objectAtIndex:i]intValue]]];
+            prefix=[prefix stringByAppendingString:[inunitchar objectAtIndex:index]];
         }
-//    }
+        if (index ==0 && zeronum<4) {
+            prefix=[prefix stringByAppendingString:[unitname objectAtIndex:indexloc]];
+        }
+    }
+    prefix =[prefix stringByAppendingString:@"元"];
+    //处理小数位
+    if ([foot isEqualToString:@"00"]) {
+        suffix =[suffix stringByAppendingString:@"整"];
+    }
+    else if ([foot hasPrefix:@"0"])
+    {
+        NSString *footch=[NSString stringWithFormat:@"%x",[foot characterAtIndex:1]-'0'];
+        suffix=[NSString stringWithFormat:@"%@分",[numberchar objectAtIndex:[footch intValue] ]];
+    }
+    else
+    {
+        NSString *headch=[NSString stringWithFormat:@"%x",[foot characterAtIndex:0]-'0'];
+        NSString *footch=[NSString stringWithFormat:@"%x",[foot characterAtIndex:1]-'0'];
+        suffix=[NSString stringWithFormat:@"%@角%@分",[numberchar objectAtIndex:[headch intValue]],[numberchar  objectAtIndex:[footch intValue]]];
+    }
     return [prefix stringByAppendingString:suffix];
 }
 

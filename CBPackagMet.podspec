@@ -10,7 +10,7 @@ s.source = { :git => "https://github.com/junedeyu/CBPackagMet.git", :tag => "1.0
 s.requires_arc = true
 s.platform = :ios, '9.0'
 # s.ios.deployment_target = '9.0'
-s.source_files = "CBPackagMet", "*.{h,m}"
+s.source_files = "CBPackagMet","SSKeychain", "*.{h,m}"
 s.frameworks = 'Foundation','UIKit'
-s.dependency "MBProgressHUD"
+s.dependency "MBProgressHUD,AFNetworking"
 end
