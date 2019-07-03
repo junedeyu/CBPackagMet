@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-
+#import "PackagMet.h"
 @interface ViewController ()
 
 @end
@@ -16,8 +16,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [PackagMet showHUDWithKeyWindowWithString:@"我是提示信息"];
+    [PackagMet initAlertViewShowStr:@"弹窗提示"];
+}
 
 @end

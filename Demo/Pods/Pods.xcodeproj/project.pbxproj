@@ -23,11 +23,9 @@
 		551EDABAFCE6F89BB75C7174D4D9D059 /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B46E1C61ABB79E57B48C147E4A0563D4 /* UIActivityIndicatorView+AFNetworking.m */; };
 		5607AF83703C0AEDB12115740B6672BD /* AFAutoPurgingImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AC2C8776A54EF592A68306354FE0FA /* AFAutoPurgingImageCache.m */; };
 		5671A72ECAB90A855ECF6F69B750B4E1 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = CF6DD49A1A398622B1AD84864A73313D /* UIWebView+AFNetworking.m */; };
-		5A3E297705F3A4547756B09B4044B940 /* MBProgressHUD-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 05FB4DD7A32C027D8F0EF16B649A6911 /* MBProgressHUD-dummy.m */; };
 		5FF1B4EEDEE8BCA2E676E2548A412B02 /* AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 339C7EDA6E4CAC9690EC305EEC95D496 /* AFNetworking.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6B5B030904BA451F4FFE3AF2FD28D2DA /* AFImageDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 34B421010094422B4AFFB6DD00A5A8D4 /* AFImageDownloader.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		72797BC85469FCE7E6198B67EC88E851 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9005861FB02C2C1C2A007A0613EE090C /* AFURLRequestSerialization.m */; };
-		7437F5624147DCDF74F3343BBB08B7EC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EC8B86F40E2DEE9AE48AE210BD754A /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		8231FDD98A7D1659F4FA5788AFEEE6DF /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B668885F7C8A7D3B350117336EC8CB7 /* AFHTTPSessionManager.m */; };
 		894126828AF68F98598CA7B53E737AEF /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AEE3B955F18A0C4319C31B69490AC2 /* UIProgressView+AFNetworking.m */; };
 		9A7A3B80A68DB4A21A6833AA4683A7AD /* AFURLResponseSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 5CE2710E69EB672811D966BDFA81B741 /* AFURLResponseSerialization.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -39,9 +37,11 @@
 		C06F61A759022A62864BD9F8EE3660F3 /* AFAutoPurgingImageCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 20D5E6301E624D83227E06ACA8A1FE2C /* AFAutoPurgingImageCache.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C1EE07F0E0B54668574633B545FBCE48 /* UIKit+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 00EF5B8C87B9CD58EF2CCA61DCEEBD26 /* UIKit+AFNetworking.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C564C8D042998164475E13AD54B0A294 /* MBProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = DB14C69DDEC53D315276F5BBFCC0A5E6 /* MBProgressHUD.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		C7FD66D3D320095B45AD9D39EF1B858B /* MBProgressHUD-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 05FB4DD7A32C027D8F0EF16B649A6911 /* MBProgressHUD-dummy.m */; };
 		D280A3B13923FF5FA778EF312BD965F7 /* AFHTTPSessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B924DC1143EF98D9C1CCFC1CD11DBBF1 /* AFHTTPSessionManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D3DC240631E1FA883A5604B3E99BAE2B /* UIProgressView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 52E5D513988E8FA839E4BDDE0E154AC6 /* UIProgressView+AFNetworking.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D569D00367B456F6CDFE2700097562FC /* AFURLRequestSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 19A6E583D61B008447E583E27C005244 /* AFURLRequestSerialization.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D6438BA4F863AE0A7891F212EE3C06D0 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EC8B86F40E2DEE9AE48AE210BD754A /* MBProgressHUD.m */; };
 		E25A825140370ECE06BA9187581B428C /* Pods-Demo-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5952586A2D8673A96A6FD8DAF5AF5E3A /* Pods-Demo-dummy.m */; };
 		E7351E56F4C49CE1F9559D5C69ECC1ED /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 59F9882C0DBA93855196E9AE983C2B21 /* AFURLSessionManager.m */; };
 		F9AD2CFBEDD600706B921428D25DFA3A /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 3174AD1311012EF8F6111F54CA39F732 /* UIImageView+AFNetworking.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -406,7 +406,7 @@
 			buildConfigurationList = 20217F7F18136BEC6503B8147352D3E3 /* Build configuration list for PBXNativeTarget "MBProgressHUD" */;
 			buildPhases = (
 				F69A1D7D9933B5C2BFB41B06C24EC219 /* Headers */,
-				39261A3821EA0B45F95301099852B974 /* Sources */,
+				12490B6EBA14F6030F9CBD9575807097 /* Sources */,
 				DCBC7FE987FB53FBB71A9E7155D9E871 /* Frameworks */,
 			);
 			buildRules = (
@@ -470,12 +470,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		39261A3821EA0B45F95301099852B974 /* Sources */ = {
+		12490B6EBA14F6030F9CBD9575807097 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A3E297705F3A4547756B09B4044B940 /* MBProgressHUD-dummy.m in Sources */,
-				7437F5624147DCDF74F3343BBB08B7EC /* MBProgressHUD.m in Sources */,
+				C7FD66D3D320095B45AD9D39EF1B858B /* MBProgressHUD-dummy.m in Sources */,
+				D6438BA4F863AE0A7891F212EE3C06D0 /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +505,30 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		2713A1AD3CC7005816E6C476FEBAD19D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB3DAA21CED87854685B1C1808D0E2FC /* MBProgressHUD.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = MBProgressHUD;
+				PRODUCT_NAME = MBProgressHUD;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		5E472B313AAA528C22C1BF1D61D97C44 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A6356BACDDF569B56C15AC6CAF0D34C0 /* AFNetworking.xcconfig */;
@@ -520,6 +544,29 @@
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_MODULE_NAME = AFNetworking;
 				PRODUCT_NAME = AFNetworking;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		690C1B11780ABBA0F742607D082E784B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB3DAA21CED87854685B1C1808D0E2FC /* MBProgressHUD.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = MBProgressHUD;
+				PRODUCT_NAME = MBProgressHUD;
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -673,31 +720,6 @@
 			};
 			name = Debug;
 		};
-		ABA61C783362551EE8E219B350178437 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB3DAA21CED87854685B1C1808D0E2FC /* MBProgressHUD.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = MBProgressHUD;
-				PRODUCT_NAME = MBProgressHUD;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		D4FD9B476EBF42E3202BFC7AA531BEB9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A37EA8446C480225F39CEFF101E4E765 /* Pods-Demo.release.xcconfig */;
@@ -719,30 +741,6 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
-		};
-		E674C296819F57A75520CE43F948A157 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB3DAA21CED87854685B1C1808D0E2FC /* MBProgressHUD.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = MBProgressHUD;
-				PRODUCT_NAME = MBProgressHUD;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
 		};
 		F0E0DE99D8C9C7D10672428D98A470BF /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -774,8 +772,8 @@
 		20217F7F18136BEC6503B8147352D3E3 /* Build configuration list for PBXNativeTarget "MBProgressHUD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E674C296819F57A75520CE43F948A157 /* Debug */,
-				ABA61C783362551EE8E219B350178437 /* Release */,
+				690C1B11780ABBA0F742607D082E784B /* Debug */,
+				2713A1AD3CC7005816E6C476FEBAD19D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

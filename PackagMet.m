@@ -180,10 +180,11 @@ static PackagMet *_instance ;
  *  提示信息
  */
 + (void)initAlertViewShowStr:(NSString *)str {
-    [[[UIAlertView alloc] initWithTitle:@"提示" message:str
-                               delegate:self
-                      cancelButtonTitle:@"确认"
-                      otherButtonTitles:nil] show];
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"提示" message:str preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    [rootNavVC presentViewController:alert animated:YES completion:nil];
 }
 
 /**
@@ -192,19 +193,18 @@ static PackagMet *_instance ;
 + (void)initAlertViewTitle:(NSString *)title
                    showStr:(NSString *)str
                    btnName:(NSString *)name {
-    [[[UIAlertView alloc] initWithTitle:title message:str
-                               delegate:self
-                      cancelButtonTitle:name ? name : @"确认"
-                      otherButtonTitles:nil] show];
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:str preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:name ? name : @"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+    [rootNavVC presentViewController:alert animated:YES completion:nil];
 }
 
 // 只有一个确认按钮
 + (void)PackagAlertOnlySureViewMsg:(NSString *)msg SureBlock:(void(^)(void))click {
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         click();
-    }];
-    [alert addAction:sureAction];
+    }]];
     [rootNavVC presentViewController:alert animated:YES completion:nil];
 }
 
@@ -327,10 +327,10 @@ static PackagMet *_instance ;
     {
         ProgressHud = [[MBProgressHUD alloc] initWithView:views.view];
         ProgressHud.minSize = MBHUD_Size;
-        ProgressHud.labelFont = [UIFont systemFontOfSize:13];
+        ProgressHud.label.font = [UIFont systemFontOfSize:13];
         [views.view addSubview:ProgressHud];
         ProgressHud.backgroundColor = HWColorAlp(0, 0, 0, 0.3);
-        ProgressHud.labelText = strTitle;
+        ProgressHud.label.text = strTitle;
     }
     return self;
 }
@@ -342,25 +342,25 @@ static PackagMet *_instance ;
     {
         ProgressHud = [MBProgressHUD showHUDAddedTo:CB_KeyWindow animated:YES];;
         ProgressHud.minSize = MBHUD_Size;
-        ProgressHud.labelFont = [UIFont systemFontOfSize:13];
-        ProgressHud.labelText = strTitle;
+        ProgressHud.label.font = [UIFont systemFontOfSize:13];
+        ProgressHud.label.text = strTitle;
     }
     return self;
 }
 
 - (void)showProgress {
-    [ProgressHud show:YES];
+    [ProgressHud showAnimated:YES];
 }
 
 - (void)initHideProgressHud {
-    [ProgressHud hide:YES];
+    [ProgressHud hideAnimated:YES];
 }
 
 - (void)initShowProgressHud:(UIViewController *)views
 {
     ProgressHud.frame = CGRectMake(-60, 0, kScreenSizes.width, kScreenSizes.height + 60);
     [views.view bringSubviewToFront:ProgressHud];
-    [ProgressHud show:YES];
+    [ProgressHud showAnimated:YES];
 }
 
 + (void)showAllTextView:(UIViewController *)view
@@ -369,54 +369,65 @@ static PackagMet *_instance ;
     MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithView:view.view];
     
     [view.view addSubview:HUD];
-    HUD.labelText = labelT;
+    HUD.label.text = labelT;
     HUD.mode = MBProgressHUDModeText;
     
     //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         HUD.minSize = CGSizeMake(130, 35);
-        HUD.labelFont = [UIFont systemFontOfSize:15];
-        HUD.yOffset = [UIScreen mainScreen].bounds.size.height/3;
+        HUD.label.font = [UIFont systemFontOfSize:15];
     }else{
         HUD.minSize = CGSizeMake(100, 25);
-        HUD.labelFont = [UIFont systemFontOfSize:14];
-        HUD.yOffset = [UIScreen mainScreen].bounds.size.height/3;
+        HUD.label.font = [UIFont systemFontOfSize:14];
     }
-    HUD.xOffset = view.view.bounds.origin.x;
+    HUD.offset = CGPointMake(view.view.bounds.origin.x, kScreenSizes.height/3.0);
     HUD.userInteractionEnabled = NO;
-    [HUD showAnimated:YES whileExecutingBlock:^{
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUD showAnimated:YES];
+        });
+        
         sleep(1);
-    } completionBlock:^{
-        [HUD removeFromSuperview];
-    }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUD removeFromSuperview];
+        });
+    });
+    
 }
 
 + (void)showHUDWithKeyWindowWithString:(NSString *)labelT
 {
-    MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithWindow:[[[UIApplication sharedApplication] delegate] window]];
+    MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithView:CB_KeyWindow];
     
-    [[[[UIApplication sharedApplication] delegate] window] addSubview:HUD];
+    [CB_KeyWindow addSubview:HUD];
     
-    HUD.labelText = labelT;
+    HUD.label.text = labelT;
     HUD.mode = MBProgressHUDModeText;
     
     //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         HUD.minSize = CGSizeMake(130, 35);
-        HUD.labelFont = [UIFont systemFontOfSize:15];
-        HUD.yOffset = [UIScreen mainScreen].bounds.size.height/2.5;
+        HUD.label.font = [UIFont systemFontOfSize:15];
     }else{
         HUD.minSize = CGSizeMake(100, 25);
-        HUD.labelFont = [UIFont systemFontOfSize:14];
-        HUD.yOffset = [UIScreen mainScreen].bounds.size.height/2.5;
+        HUD.label.font = [UIFont systemFontOfSize:14];
     }
-    HUD.xOffset = [UIScreen mainScreen].bounds.origin.x;
+    HUD.offset = CGPointMake([UIScreen mainScreen].bounds.origin.x, kScreenSizes.height/2.5);
     HUD.userInteractionEnabled = NO;
-    [HUD showAnimated:YES whileExecutingBlock:^{
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUD showAnimated:YES];
+        });
+        
         sleep(1);
-    } completionBlock:^{
-        [HUD removeFromSuperview];
-    }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUD removeFromSuperview];
+        });
+    });
 }
 
 + (void)initWithUILabelText:(UILabel *)label
