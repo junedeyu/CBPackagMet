@@ -8,18 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		1FDC64C6CAE5F125343E0C8C /* libPods-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E647BE91E3F2149F452A7B /* libPods-Demo.a */; };
+		3C1F065822CCAA9C0002154E /* PackagMet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1F065622CCAA9C0002154E /* PackagMet.m */; };
 		3C21EC2E22CB2ADF001B2879 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C21EC2D22CB2ADF001B2879 /* AppDelegate.m */; };
 		3C21EC3122CB2ADF001B2879 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C21EC3022CB2ADF001B2879 /* ViewController.m */; };
 		3C21EC3422CB2ADF001B2879 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C21EC3222CB2ADF001B2879 /* Main.storyboard */; };
 		3C21EC3622CB2AE4001B2879 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C21EC3522CB2AE4001B2879 /* Assets.xcassets */; };
 		3C21EC3922CB2AE4001B2879 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C21EC3722CB2AE4001B2879 /* LaunchScreen.storyboard */; };
 		3C21EC3C22CB2AE4001B2879 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C21EC3B22CB2AE4001B2879 /* main.m */; };
-		3C21EC4422CB2AF5001B2879 /* PackagMet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C21EC4222CB2AF4001B2879 /* PackagMet.m */; };
-		3C21EC4722CB2C97001B2879 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C21EC4622CB2C97001B2879 /* SSKeychain.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		35E647BE91E3F2149F452A7B /* libPods-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C1F065622CCAA9C0002154E /* PackagMet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PackagMet.m; path = ../../PackagMet.m; sourceTree = "<group>"; };
+		3C1F065722CCAA9C0002154E /* PackagMet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PackagMet.h; path = ../../PackagMet.h; sourceTree = "<group>"; };
 		3C21EC2922CB2ADF001B2879 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C21EC2C22CB2ADF001B2879 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3C21EC2D22CB2ADF001B2879 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -30,10 +31,6 @@
 		3C21EC3822CB2AE4001B2879 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3C21EC3A22CB2AE4001B2879 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3C21EC3B22CB2AE4001B2879 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3C21EC4222CB2AF4001B2879 /* PackagMet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PackagMet.m; path = ../../PackagMet.m; sourceTree = "<group>"; };
-		3C21EC4322CB2AF4001B2879 /* PackagMet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PackagMet.h; path = ../../PackagMet.h; sourceTree = "<group>"; };
-		3C21EC4522CB2C97001B2879 /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = ../../SSKeychain.h; sourceTree = "<group>"; };
-		3C21EC4622CB2C97001B2879 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = ../../SSKeychain.m; sourceTree = "<group>"; };
 		7C8778FBE7F812A81793273B /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		EA5C01A00CECF7F73A39ED04 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,10 +68,8 @@
 		3C21EC2B22CB2ADF001B2879 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				3C21EC4522CB2C97001B2879 /* SSKeychain.h */,
-				3C21EC4622CB2C97001B2879 /* SSKeychain.m */,
-				3C21EC4322CB2AF4001B2879 /* PackagMet.h */,
-				3C21EC4222CB2AF4001B2879 /* PackagMet.m */,
+				3C1F065722CCAA9C0002154E /* PackagMet.h */,
+				3C1F065622CCAA9C0002154E /* PackagMet.m */,
 				3C21EC2C22CB2ADF001B2879 /* AppDelegate.h */,
 				3C21EC2D22CB2ADF001B2879 /* AppDelegate.m */,
 				3C21EC2F22CB2ADF001B2879 /* ViewController.h */,
@@ -204,8 +199,7 @@
 				3C21EC3122CB2ADF001B2879 /* ViewController.m in Sources */,
 				3C21EC3C22CB2AE4001B2879 /* main.m in Sources */,
 				3C21EC2E22CB2ADF001B2879 /* AppDelegate.m in Sources */,
-				3C21EC4422CB2AF5001B2879 /* PackagMet.m in Sources */,
-				3C21EC4722CB2C97001B2879 /* SSKeychain.m in Sources */,
+				3C1F065822CCAA9C0002154E /* PackagMet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

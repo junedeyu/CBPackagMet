@@ -4,4 +4,5 @@ target 'Demo' do
 pod 'MBProgressHUD'
 #,'~> 0.9.2'
 pod 'AFNetworking'
+pod 'CBPackagMet'
 end
