@@ -252,7 +252,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  传入需要转换的时间
  *  获取的时间与现有时间的差值
- * @return
  */
 + (NSString *)GetTimeChange:(NSString *)timeStr;
 
