@@ -174,7 +174,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  获取一年中得数据
  *
- *  @return @property NSInteger era;
+ @property NSInteger era;
  @property NSInteger year;
  @property NSInteger month;
  @property NSInteger day;
