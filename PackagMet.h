@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  时间计算
  */
-+ (NSString *)checkOrderDate:(id)date string:(NSString *)Str;
++ (NSString *)checkOrderDate:(id)date string:(nullable NSString *)Str;
 
 /**
  *  缓冲图标
@@ -120,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  获取当前时间
  */
-+ (NSString *)checkNowTimeStr:(NSString *)str date:(NSDate *)date;
++ (NSString *)checkNowTimeStr:(nullable NSString *)str date:(NSDate *)date;
 
 /**
  *  获取当前时间
@@ -130,7 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return NSDate
  */
-+ (NSDate *)checkDateNowTimeStr:(NSString *)str
++ (NSDate *)checkDateNowTimeStr:(nullable NSString *)str
                          date:(NSDate *)date;
 
 /**
@@ -140,7 +140,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param dateStr 要转换的时间
  @return 转换后的时间
  */
-+ (NSDate *)checkDateTimeStr:(NSString *)str
++ (NSDate *)checkDateTimeStr:(nullable NSString *)str
                    dateStr:(NSString *)dateStr ;
 
 + (NSString *)metCheckWithTimeString:(NSString *)timeStr;
@@ -212,7 +212,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)initButtonLayerBtn:(UIView *)btn
                     corner:(NSInteger)num
                   borwidth:(NSInteger)borWNum
-                   bocolor:(CGColorRef)color;
+                   bocolor:(nullable CGColorRef)color;
 /**
  *  字符串字典 转 字典
  */

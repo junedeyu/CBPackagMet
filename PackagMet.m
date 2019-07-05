@@ -235,7 +235,7 @@ static PackagMet *_instance ;
 
 //时间计算/S
 + (NSString *)checkOrderDate:(id)date
-                      string:(NSString *)Str {
+                      string:(nullable NSString *)Str {
     NSString *string = [NSString stringWithFormat:@"%@",date] ;
     string = [string substringWithRange:NSMakeRange(0, string.length - 3)];
     NSDate *nd = [NSDate dateWithTimeIntervalSince1970: [string doubleValue]];
@@ -249,7 +249,7 @@ static PackagMet *_instance ;
     return dateString ;
 }
 
-+ (NSString *)checkNowTimeStr:(NSString *)str
++ (NSString *)checkNowTimeStr:(nullable NSString *)str
                        date:(NSDate *)date
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
@@ -266,7 +266,7 @@ static PackagMet *_instance ;
     return NowTime;
 }
 
-+ (NSDate *)checkDateNowTimeStr:(NSString *)str
++ (NSDate *)checkDateNowTimeStr:(nullable NSString *)str
                            date:(NSDate *)date {
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
@@ -281,7 +281,7 @@ static PackagMet *_instance ;
     return localeDate;
 }
 
-+ (NSDate *)checkDateTimeStr:(NSString *)str dateStr:(NSString *)dateStr {
++ (NSDate *)checkDateTimeStr:(nullable NSString *)str dateStr:(NSString *)dateStr {
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     if (str == nil) {
@@ -550,7 +550,7 @@ static PackagMet *_instance ;
 + (void)initButtonLayerBtn:(UIView *)btn
                     corner:(NSInteger)num
                   borwidth:(NSInteger)borWNum
-                   bocolor:(CGColorRef)color
+                   bocolor:(nullable CGColorRef)color
 {
     btn.layer.borderWidth = borWNum;
     btn.layer.borderColor = color;
