@@ -435,6 +435,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSString *)getCurrentDeviceModel;
 
+// 生成二维码并显示
++ (UIImage *)QRCodeWithString:(NSString *)QRStr;
+
 @end
 
 NS_ASSUME_NONNULL_END

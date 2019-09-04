@@ -1351,4 +1351,19 @@ static PackagMet *_instance ;
     return deviceModel;
 }
 
+// 生成二维码并显示
++ (UIImage *)QRCodeWithString:(NSString *)QRStr {
+    //创建过滤器
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    //过滤器恢复默认
+    [filter setDefaults];
+    //将NSString格式转化成NSData格式
+    NSData *data = [QRStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    
+    [filter setValue:data forKeyPath:@"inputMessage"];
+    //获取二维码过滤器生成的二维码
+    CIImage *image = [filter outputImage];
+    return [PackagMet createNonInterpolatedUIImageFormCIImage:image size:65.0];
+}
+
 @end
