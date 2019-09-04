@@ -312,7 +312,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  文件写入
  */
-+ (BOOL)createDataBaseWithDic:(NSMutableDictionary *)dict pathComment:(NSString *)pathComment;
++ (BOOL)createDataBaseWithDic:(NSDictionary *)dict pathComment:(NSString *)pathComment;
 
 /**
  *  自定义View四个角的圆角
