@@ -994,17 +994,13 @@ static PackagMet *_instance ;
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
-            case AFNetworkReachabilityStatusUnknown:
-                    [self showHUDWithKeyWindowWithString:@"暂无网络"];
+            case AFNetworkReachabilityStatusUnknown: [self showHUDWithKeyWindowWithString:@"请检查网络"];
                 break;
-            case AFNetworkReachabilityStatusNotReachable:
-                    [self showHUDWithKeyWindowWithString:@"暂无网络"];
+            case AFNetworkReachabilityStatusNotReachable: [self showHUDWithKeyWindowWithString:@"请检查网络"];
                 break;
-            case AFNetworkReachabilityStatusReachableViaWWAN:
-//                [self showHUDWithKeyWindowWithString:@"正在使用手机流量"];
+            case AFNetworkReachabilityStatusReachableViaWWAN: [self showHUDWithKeyWindowWithString:@"正在使用流量"];
                 break;
-            case AFNetworkReachabilityStatusReachableViaWiFi:
-//                [self showHUDWithKeyWindowWithString:@"WiFi已连接"];
+            case AFNetworkReachabilityStatusReachableViaWiFi: [self showHUDWithKeyWindowWithString:@"网络已连接"];
                 break;
             default:
                 break;
@@ -1364,6 +1360,19 @@ static PackagMet *_instance ;
     //获取二维码过滤器生成的二维码
     CIImage *image = [filter outputImage];
     return [PackagMet createNonInterpolatedUIImageFormCIImage:image size:65.0];
+}
+
+// 指定View生成图片
++ (UIImage *)PackagSnapshotSingleView:(UIView *)view {
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(view.bounds.size.width+1.5, view.bounds.size.height), NO, 3.0);
+    
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 @end

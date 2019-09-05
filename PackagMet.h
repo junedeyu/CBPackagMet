@@ -435,8 +435,22 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSString *)getCurrentDeviceModel;
 
-// 生成二维码并显示
+
+/**
+ 生成二维码并显示
+
+ @param QRStr 文字内容
+ @return 生成的w二维码
+ */
 + (UIImage *)QRCodeWithString:(NSString *)QRStr;
+
+/**
+ 指定View生成图片
+
+ @param view 要生成图片的View
+ @return 图片
+ */
++ (UIImage *)PackagSnapshotSingleView:(UIView *)view;
 
 @end
 
