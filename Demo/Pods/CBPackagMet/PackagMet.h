@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  时间计算
  */
-+ (NSString *)checkOrderDate:(id)date string:(NSString *)Str;
++ (NSString *)checkOrderDate:(id)date string:(nullable NSString *)Str;
 
 /**
  *  缓冲图标
@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  提示成功
  */
-+ (void)showAllTextView:(UIViewController *)view NsString:(NSString *)labelT;
++ (void)showAllTextView:(UIViewController *)view string:(NSString *)labelT;
 + (void)showHUDWithKeyWindowWithString:(NSString *)labelT;
 
 /**
@@ -120,18 +120,18 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  获取当前时间
  */
-+ (NSString *)checkNowTimeStr:(NSString *)str nsdate:(NSDate *)dates;
++ (NSString *)checkNowTimeStr:(nullable NSString *)str date:(NSDate *)date;
 
 /**
  *  获取当前时间
  *
  *  @param str   @"yyyy-MM-dd HH:mm:ss"
- *  @param dates NSDate
+ *  @param date NSDate
  *
  *  @return NSDate
  */
-+ (NSDate *)checkDateNowTimeStr:(NSString *)str
-                         nsdate:(NSDate *)dates;
++ (NSDate *)checkDateNowTimeStr:(nullable NSString *)str
+                         date:(NSDate *)date;
 
 /**
  格式化时间 ，将字符串时间转换为 NSDate 格式
@@ -140,8 +140,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param dateStr 要转换的时间
  @return 转换后的时间
  */
-+ (NSDate *)checkDateTimeStr:(NSString *)str
-                   nsdateStr:(NSString *)dateStr ;
++ (NSDate *)checkDateTimeStr:(nullable NSString *)str
+                   dateStr:(NSString *)dateStr ;
 
 + (NSString *)metCheckWithTimeString:(NSString *)timeStr;
 
@@ -157,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  计算星期
  */
-+ (NSString *)initTimeWeekDate:(id)date str:(NSString *)Str;
++ (NSString *)initTimeWeekDate:(id)date str:(NSString *)str;
 
 /**
  *  根据当前时间获取星期
@@ -174,7 +174,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  获取一年中得数据
  *
- *  @return @property NSInteger era;
+ @property NSInteger era;
  @property NSInteger year;
  @property NSInteger month;
  @property NSInteger day;
@@ -196,11 +196,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  计算前后一个月
  *
  *  @param date  要计算的时间
- *  @param Flag 正数为后一个月 负数为前一个月
+ *  @param flag 正数为后一个月 负数为前一个月
  *
  *  @return 计算后的时间
  */
-+ (NSDate *)getPriousorLaterDateFromDate:(NSDate *)date flag:(int)Flag;
++ (NSDate *)getPriousorLaterDateFromDate:(NSDate *)date flag:(int)flag;
 
 /**
  *  判断权限
@@ -212,16 +212,16 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)initButtonLayerBtn:(UIView *)btn
                     corner:(NSInteger)num
                   borwidth:(NSInteger)borWNum
-                   bocolor:(CGColorRef)color;
+                   bocolor:(nullable CGColorRef)color;
 /**
  *  字符串字典 转 字典
  */
-+(NSDictionary *)parseJSONStringToNSDictionary:(NSString *)JSONString;
++(NSDictionary *)ParseDictJsonWithStr:(NSString *)JsonStr;
 
 /**
  *  字符串字典 转 字典
  */
-+ (NSArray *)parseJSONStringToNSArray:(NSString *)JSONString;
++ (NSArray *)ParseAryJsonWithStr:(NSString *)JsonStr;
 
 /**
  *  删除换行符
@@ -241,7 +241,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*
  *  自定义Label
  */
-+ (UILabel *)getLabelLayer:(UILabel *)label Width:(CGFloat )Width BorderColor:(UIColor *)color CornerRadius:(CGFloat)radius;
++ (UILabel *)getLabelLayer:(UILabel *)label width:(CGFloat )width borderColor:(UIColor *)color cornerRadius:(CGFloat)radius;
 
 + (UILabel *)getLabelTitle:(UILabel *)label text:(NSString *)text font:(CGFloat)font textColor:(UIColor *)color textAlignment:(NSTextAlignment)Alignment;
 /*
@@ -252,7 +252,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  传入需要转换的时间
  *  获取的时间与现有时间的差值
- * @return
  */
 + (NSString *)GetTimeChange:(NSString *)timeStr;
 
@@ -313,7 +312,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  文件写入
  */
-+ (BOOL)createDataBaseWithDic:(NSMutableDictionary *)dict pathComment:(NSString *)pathComment;
++ (BOOL)createDataBaseWithDic:(NSDictionary *)dict pathComment:(NSString *)pathComment;
 
 /**
  *  自定义View四个角的圆角
@@ -324,11 +323,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param color    需要改变成的颜色
  *  @param totalStr 总的字符串
- *  @param subArray 需要改变颜色的文字数组(要是有相同的 只取第一个)
+ *  @param subAry 需要改变颜色的文字数组(要是有相同的 只取第一个)
  *
  *  @return 生成的富文本
  */
-+ (NSMutableAttributedString *)att_changeCorlorWithColor:(UIColor *)color TotalString:(NSString *)totalStr SubStringArray:(NSArray *)subArray;
++ (NSMutableAttributedString *)att_changeCorlorWithColor:(UIColor *)color TotalString:(NSString *)totalStr SubStringAry:(NSArray *)subAry;
 
 /**
  *  局部刷新tableView cell
@@ -364,7 +363,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return UUID
  */
-+ (NSString*) stringWithUUID;
++ (NSString*)stringWithUUID;
 
 /**
  获取软件和设备的唯一标识符，不管软件卸载几次都不会变 (类似于UDID,但他是软件和设备的结合体)
@@ -417,7 +416,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)compareOneDay:(NSDate *)oneDay withAnotherDay:(NSDate *)anotherDay;
 
 // 生成的二维码太模糊的处理方法
-+ (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image withSize:(CGFloat) size;
++ (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image size:(CGFloat)size;
 
 
 /**
@@ -435,6 +434,23 @@ NS_ASSUME_NONNULL_BEGIN
  @return 手机具体型号
  */
 + (NSString *)getCurrentDeviceModel;
+
+
+/**
+ 生成二维码并显示
+
+ @param QRStr 文字内容
+ @return 生成的w二维码
+ */
++ (UIImage *)QRCodeWithString:(NSString *)QRStr;
+
+/**
+ 指定View生成图片
+
+ @param view 要生成图片的View
+ @return 图片
+ */
++ (UIImage *)PackagSnapshotSingleView:(UIView *)view;
 
 @end
 

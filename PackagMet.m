@@ -327,10 +327,11 @@ static PackagMet *_instance ;
     if (self = [super init])
     {
         ProgressHud = [[MBProgressHUD alloc] initWithView:views.view];
+        ProgressHud.contentColor = [UIColor whiteColor];
+        ProgressHud.bezelView.blurEffectStyle = UIBlurEffectStyleDark;
         ProgressHud.minSize = MBHUD_Size;
         ProgressHud.label.font = [UIFont systemFontOfSize:13];
         [views.view addSubview:ProgressHud];
-        ProgressHud.backgroundColor = HWColorAlp(0, 0, 0, 0.3);
         ProgressHud.label.text = strTitle;
     }
     return self;
@@ -341,7 +342,9 @@ static PackagMet *_instance ;
 {
     if (self = [super init])
     {
-        ProgressHud = [MBProgressHUD showHUDAddedTo:CB_KeyWindow animated:YES];;
+        ProgressHud = [MBProgressHUD showHUDAddedTo:CB_KeyWindow animated:YES];
+        ProgressHud.contentColor = [UIColor whiteColor];
+        ProgressHud.bezelView.blurEffectStyle = UIBlurEffectStyleDark;
         ProgressHud.minSize = MBHUD_Size;
         ProgressHud.label.font = [UIFont systemFontOfSize:13];
         ProgressHud.label.text = strTitle;
@@ -368,8 +371,10 @@ static PackagMet *_instance ;
                string:(NSString *)labelT
 {
     MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithView:view.view];
-    
+    HUD.contentColor = [UIColor whiteColor];
+    HUD.bezelView.blurEffectStyle = UIBlurEffectStyleDark;
     [view.view addSubview:HUD];
+    
     HUD.label.text = labelT;
     HUD.mode = MBProgressHUDModeText;
     
@@ -401,6 +406,8 @@ static PackagMet *_instance ;
 + (void)showHUDWithKeyWindowWithString:(NSString *)labelT
 {
     MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithView:CB_KeyWindow];
+    HUD.contentColor = [UIColor whiteColor];
+    HUD.bezelView.blurEffectStyle = UIBlurEffectStyleDark;
     
     [CB_KeyWindow addSubview:HUD];
     

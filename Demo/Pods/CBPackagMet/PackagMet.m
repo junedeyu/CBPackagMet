@@ -180,10 +180,11 @@ static PackagMet *_instance ;
  *  提示信息
  */
 + (void)initAlertViewShowStr:(NSString *)str {
-    [[[UIAlertView alloc] initWithTitle:@"提示" message:str
-                               delegate:self
-                      cancelButtonTitle:@"确认"
-                      otherButtonTitles:nil] show];
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"提示" message:str preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    [rootNavVC presentViewController:alert animated:YES completion:nil];
 }
 
 /**
@@ -192,19 +193,18 @@ static PackagMet *_instance ;
 + (void)initAlertViewTitle:(NSString *)title
                    showStr:(NSString *)str
                    btnName:(NSString *)name {
-    [[[UIAlertView alloc] initWithTitle:title message:str
-                               delegate:self
-                      cancelButtonTitle:name ? name : @"确认"
-                      otherButtonTitles:nil] show];
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:str preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:name ? name : @"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+    [rootNavVC presentViewController:alert animated:YES completion:nil];
 }
 
 // 只有一个确认按钮
 + (void)PackagAlertOnlySureViewMsg:(NSString *)msg SureBlock:(void(^)(void))click {
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         click();
-    }];
-    [alert addAction:sureAction];
+    }]];
     [rootNavVC presentViewController:alert animated:YES completion:nil];
 }
 
@@ -235,7 +235,7 @@ static PackagMet *_instance ;
 
 //时间计算/S
 + (NSString *)checkOrderDate:(id)date
-                      string:(NSString *)Str {
+                      string:(nullable NSString *)Str {
     NSString *string = [NSString stringWithFormat:@"%@",date] ;
     string = [string substringWithRange:NSMakeRange(0, string.length - 3)];
     NSDate *nd = [NSDate dateWithTimeIntervalSince1970: [string doubleValue]];
@@ -249,8 +249,8 @@ static PackagMet *_instance ;
     return dateString ;
 }
 
-+ (NSString *)checkNowTimeStr:(NSString *)str
-                       nsdate:(NSDate *)dates
++ (NSString *)checkNowTimeStr:(nullable NSString *)str
+                       date:(NSDate *)date
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
@@ -260,14 +260,14 @@ static PackagMet *_instance ;
         [formatter setDateFormat:str];
     }
     NSTimeZone *zone = [NSTimeZone systemTimeZone];
-    NSInteger interval = [zone secondsFromGMTForDate: dates];
-    NSDate *localeDate = [dates  dateByAddingTimeInterval: interval];
+    NSInteger interval = [zone secondsFromGMTForDate: date];
+    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
     NSString *NowTime = [formatter stringFromDate:localeDate];
     return NowTime;
 }
 
-+ (NSDate *)checkDateNowTimeStr:(NSString *)str
-                       nsdate:(NSDate *)dates {
++ (NSDate *)checkDateNowTimeStr:(nullable NSString *)str
+                           date:(NSDate *)date {
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     if (str == nil) {
@@ -276,12 +276,12 @@ static PackagMet *_instance ;
         [formatter setDateFormat:str];
     }
     NSTimeZone *zone = [NSTimeZone systemTimeZone];
-    NSInteger interval = [zone secondsFromGMTForDate: dates];
-    NSDate *localeDate = [dates  dateByAddingTimeInterval: interval];
+    NSInteger interval = [zone secondsFromGMTForDate: date];
+    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
     return localeDate;
 }
 
-+ (NSDate *)checkDateTimeStr:(NSString *)str nsdateStr:(NSString *)dateStr {
++ (NSDate *)checkDateTimeStr:(nullable NSString *)str dateStr:(NSString *)dateStr {
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     if (str == nil) {
@@ -312,10 +312,10 @@ static PackagMet *_instance ;
  *
  *  @return 计算后的时间
  */
-+ (NSDate *)getPriousorLaterDateFromDate:(NSDate *)date flag:(int)Flag
++ (NSDate *)getPriousorLaterDateFromDate:(NSDate *)date flag:(int)flag
 {
     NSDateComponents *comps = [[NSDateComponents alloc] init];
-    [comps setMonth:Flag];
+    [comps setMonth:flag];
     NSCalendar *calender = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDate *mDate = [calender dateByAddingComponents:comps toDate:date options:0];
     return mDate;
@@ -327,10 +327,10 @@ static PackagMet *_instance ;
     {
         ProgressHud = [[MBProgressHUD alloc] initWithView:views.view];
         ProgressHud.minSize = MBHUD_Size;
-        ProgressHud.labelFont = [UIFont systemFontOfSize:13];
+        ProgressHud.label.font = [UIFont systemFontOfSize:13];
         [views.view addSubview:ProgressHud];
         ProgressHud.backgroundColor = HWColorAlp(0, 0, 0, 0.3);
-        ProgressHud.labelText = strTitle;
+        ProgressHud.label.text = strTitle;
     }
     return self;
 }
@@ -342,81 +342,92 @@ static PackagMet *_instance ;
     {
         ProgressHud = [MBProgressHUD showHUDAddedTo:CB_KeyWindow animated:YES];;
         ProgressHud.minSize = MBHUD_Size;
-        ProgressHud.labelFont = [UIFont systemFontOfSize:13];
-        ProgressHud.labelText = strTitle;
+        ProgressHud.label.font = [UIFont systemFontOfSize:13];
+        ProgressHud.label.text = strTitle;
     }
     return self;
 }
 
 - (void)showProgress {
-    [ProgressHud show:YES];
+    [ProgressHud showAnimated:YES];
 }
 
 - (void)initHideProgressHud {
-    [ProgressHud hide:YES];
+    [ProgressHud hideAnimated:YES];
 }
 
 - (void)initShowProgressHud:(UIViewController *)views
 {
     ProgressHud.frame = CGRectMake(-60, 0, kScreenSizes.width, kScreenSizes.height + 60);
     [views.view bringSubviewToFront:ProgressHud];
-    [ProgressHud show:YES];
+    [ProgressHud showAnimated:YES];
 }
 
 + (void)showAllTextView:(UIViewController *)view
-               NsString:(NSString *)labelT
+               string:(NSString *)labelT
 {
     MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithView:view.view];
     
     [view.view addSubview:HUD];
-    HUD.labelText = labelT;
+    HUD.label.text = labelT;
     HUD.mode = MBProgressHUDModeText;
     
     //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         HUD.minSize = CGSizeMake(130, 35);
-        HUD.labelFont = [UIFont systemFontOfSize:15];
-        HUD.yOffset = [UIScreen mainScreen].bounds.size.height/3;
+        HUD.label.font = [UIFont systemFontOfSize:15];
     }else{
         HUD.minSize = CGSizeMake(100, 25);
-        HUD.labelFont = [UIFont systemFontOfSize:14];
-        HUD.yOffset = [UIScreen mainScreen].bounds.size.height/3;
+        HUD.label.font = [UIFont systemFontOfSize:14];
     }
-    HUD.xOffset = view.view.bounds.origin.x;
+    HUD.offset = CGPointMake(view.view.bounds.origin.x, kScreenSizes.height/3.0);
     HUD.userInteractionEnabled = NO;
-    [HUD showAnimated:YES whileExecutingBlock:^{
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUD showAnimated:YES];
+        });
+        
         sleep(1);
-    } completionBlock:^{
-        [HUD removeFromSuperview];
-    }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUD removeFromSuperview];
+        });
+    });
+    
 }
 
 + (void)showHUDWithKeyWindowWithString:(NSString *)labelT
 {
-    MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithWindow:[[[UIApplication sharedApplication] delegate] window]];
+    MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithView:CB_KeyWindow];
     
-    [[[[UIApplication sharedApplication] delegate] window] addSubview:HUD];
+    [CB_KeyWindow addSubview:HUD];
     
-    HUD.labelText = labelT;
+    HUD.label.text = labelT;
     HUD.mode = MBProgressHUDModeText;
     
     //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         HUD.minSize = CGSizeMake(130, 35);
-        HUD.labelFont = [UIFont systemFontOfSize:15];
-        HUD.yOffset = [UIScreen mainScreen].bounds.size.height/2.5;
+        HUD.label.font = [UIFont systemFontOfSize:15];
     }else{
         HUD.minSize = CGSizeMake(100, 25);
-        HUD.labelFont = [UIFont systemFontOfSize:14];
-        HUD.yOffset = [UIScreen mainScreen].bounds.size.height/2.5;
+        HUD.label.font = [UIFont systemFontOfSize:14];
     }
-    HUD.xOffset = [UIScreen mainScreen].bounds.origin.x;
+    HUD.offset = CGPointMake([UIScreen mainScreen].bounds.origin.x, kScreenSizes.height/2.5);
     HUD.userInteractionEnabled = NO;
-    [HUD showAnimated:YES whileExecutingBlock:^{
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUD showAnimated:YES];
+        });
+        
         sleep(1);
-    } completionBlock:^{
-        [HUD removeFromSuperview];
-    }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUD removeFromSuperview];
+        });
+    });
 }
 
 + (void)initWithUILabelText:(UILabel *)label
@@ -467,45 +478,45 @@ static PackagMet *_instance ;
 }
 
 + (NSString *)initTimeWeekDate:(id)date
-                           str:(NSString *)Str
+                           str:(NSString *)str
 {
     NSString *string = [NSString stringWithFormat:@"%@",date] ;
     string = [string substringWithRange:NSMakeRange(0, string.length - 3)];
     NSDate *nd = [NSDate dateWithTimeIntervalSince1970: [string doubleValue]];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:Str];
+    [dateFormat setDateFormat:str];
 //    NSString *dateString = [dateFormat stringFromDate:nd];
     //获取现在是星期几
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *comps = [calendar components:NSCalendarUnitWeekday fromDate:nd];
     NSInteger weekday = [comps weekday]; // 星期几（注意，周日是“1”，周一是“2”。。。。）
-    NSString * str = @"";
+    NSString * day = @"";
     switch (weekday) {
         case 1:
-            str = @"日";
+            day = @"日";
             break;
         case 2:
-            str = @"一";
+            day = @"一";
             break;
         case 3:
-            str = @"二";
+            day = @"二";
             break;
         case 4:
-            str = @"三";
+            day = @"三";
             break;
         case 5:
-            str = @"四";
+            day = @"四";
             break;
         case 6:
-            str = @"五";
+            day = @"五";
             break;
         case 7:
-            str = @"六";
+            day = @"六";
             break;
         default:
             break;
     }
-    return str;
+    return day;
 }
 
 + (NSDateComponents *)initDateComponentsView
@@ -539,7 +550,7 @@ static PackagMet *_instance ;
 + (void)initButtonLayerBtn:(UIView *)btn
                     corner:(NSInteger)num
                   borwidth:(NSInteger)borWNum
-                   bocolor:(CGColorRef)color
+                   bocolor:(nullable CGColorRef)color
 {
     btn.layer.borderWidth = borWNum;
     btn.layer.borderColor = color;
@@ -556,14 +567,14 @@ static PackagMet *_instance ;
 //    btn.layer.mask = maskLayer;
 }
 
-+(NSDictionary *)parseJSONStringToNSDictionary:(NSString *)JSONString {
-    NSData *JSONData = [JSONString dataUsingEncoding:NSUTF8StringEncoding];
++(NSDictionary *)ParseDictJsonWithStr:(NSString *)JsonStr {
+    NSData *JSONData = [JsonStr dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:JSONData options:NSJSONReadingMutableLeaves error:nil];
     return responseJSON;
 }
 
-+ (NSArray *)parseJSONStringToNSArray:(NSString *)JSONString {
-    NSData *JSONData = [JSONString dataUsingEncoding:NSUTF8StringEncoding];
++ (NSArray *)ParseAryJsonWithStr:(NSString *)JsonStr {
+    NSData *JSONData = [JsonStr dataUsingEncoding:NSUTF8StringEncoding];
     NSArray *responseJSON = [NSJSONSerialization JSONObjectWithData:JSONData options:NSJSONReadingMutableLeaves error:nil];
     return responseJSON;
 }
@@ -631,9 +642,9 @@ static PackagMet *_instance ;
     return view;
 }
 
-+ (UILabel *)getLabelLayer:(UILabel *)label Width:(CGFloat )Width BorderColor:(UIColor *)color CornerRadius:(CGFloat)radius {
++ (UILabel *)getLabelLayer:(UILabel *)label width:(CGFloat )width borderColor:(UIColor *)color cornerRadius:(CGFloat)radius {
     [label.layer setBorderColor:color.CGColor];
-    [label.layer setBorderWidth:Width];
+    [label.layer setBorderWidth:width];
     [label.layer setCornerRadius:radius];
     return label;
 }
@@ -859,7 +870,7 @@ static PackagMet *_instance ;
     NSData * data =  [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
     NSString * str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     str = [str lowercaseString];
-    return [self parseJSONStringToNSDictionary:str];
+    return [self ParseDictJsonWithStr:str];
 }
 
 + (NSString *)getDoubleFromString:(NSString *)string numberOfxiaoshu:(NSInteger )num {
@@ -884,7 +895,7 @@ static PackagMet *_instance ;
 }
 
 // 文件写入
-+ (BOOL)createDataBaseWithDic:(NSMutableDictionary *)dict pathComment:(NSString *)pathComment
++ (BOOL)createDataBaseWithDic:(NSDictionary *)dict pathComment:(NSString *)pathComment
 {
     // 1.获得沙盒根路径
     NSString *home = NSHomeDirectory();
@@ -934,9 +945,9 @@ static PackagMet *_instance ;
  */
 + (NSMutableAttributedString *)att_changeCorlorWithColor:(UIColor *)color
                                             TotalString:(NSString *)totalStr
-                                         SubStringArray:(NSArray *)subArray {
+                                         SubStringAry:(NSArray *)subAry {
     NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:totalStr];
-    for (NSString *rangeStr in subArray) {
+    for (NSString *rangeStr in subAry) {
         NSRange range = [totalStr rangeOfString:rangeStr
                                         options:NSBackwardsSearch];
         [attributedStr addAttribute:NSForegroundColorAttributeName
@@ -983,17 +994,13 @@ static PackagMet *_instance ;
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
-            case AFNetworkReachabilityStatusUnknown:
-                    [self showHUDWithKeyWindowWithString:@"暂无网络"];
+            case AFNetworkReachabilityStatusUnknown: [self showHUDWithKeyWindowWithString:@"请检查网络"];
                 break;
-            case AFNetworkReachabilityStatusNotReachable:
-                    [self showHUDWithKeyWindowWithString:@"暂无网络"];
+            case AFNetworkReachabilityStatusNotReachable: [self showHUDWithKeyWindowWithString:@"请检查网络"];
                 break;
-            case AFNetworkReachabilityStatusReachableViaWWAN:
-//                [self showHUDWithKeyWindowWithString:@"正在使用手机流量"];
+            case AFNetworkReachabilityStatusReachableViaWWAN: [self showHUDWithKeyWindowWithString:@"正在使用流量"];
                 break;
-            case AFNetworkReachabilityStatusReachableViaWiFi:
-//                [self showHUDWithKeyWindowWithString:@"WiFi已连接"];
+            case AFNetworkReachabilityStatusReachableViaWiFi: [self showHUDWithKeyWindowWithString:@"网络已连接"];
                 break;
             default:
                 break;
@@ -1118,14 +1125,14 @@ static PackagMet *_instance ;
 
 + (void)checkForUpdates {
     NSString *content = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://www.teenysoft.com/App/Client/Ver.txt"]] encoding:NSUTF8StringEncoding];
-    NSDictionary * info = [PackagMet parseJSONStringToNSDictionary:content][@"iOS"];
+    NSDictionary * info = [PackagMet ParseDictJsonWithStr:content][@"iOS"];
     // 比较
     NSString * newVer = [info[@"ver"] stringByReplacingOccurrencesOfString:@"." withString:@""];
     NSString * nowVer = [[PackagMet version] stringByReplacingOccurrencesOfString:@"." withString:@""];
 //    NSDate * netDate = [PackagMet checkDateTimeStr:nil nsdateStr:info[@"date"]];
 //    BOOL flag = [PackagMet compareOneDay:[PackagMet checkDateNowTimeStr:nil nsdate:[NSDate date]] withAnotherDay:netDate];
     if ([nowVer integerValue] < [newVer integerValue]) {
-        NSString * date = [PackagMet checkNowTimeStr:@"yyyy-MM-dd" nsdate:[NSDate date]];
+        NSString * date = [PackagMet checkNowTimeStr:@"yyyy-MM-dd" date:[NSDate date]];
         if ([[kUserDef valueForKey:@"TSUpdates"] isEqualToString:date]) {
             return;
         }
@@ -1150,7 +1157,7 @@ static PackagMet *_instance ;
 }
 
 // 生成的二维码太模糊的处理方法
-+ (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image withSize:(CGFloat) size {
++ (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image size:(CGFloat) size {
     
     CGRect extent = CGRectIntegral(image.extent);
     
@@ -1338,6 +1345,34 @@ static PackagMet *_instance ;
     if ([deviceModel isEqualToString:@"i386"])         return @"Simulator";
     if ([deviceModel isEqualToString:@"x86_64"])       return @"Simulator";
     return deviceModel;
+}
+
+// 生成二维码并显示
++ (UIImage *)QRCodeWithString:(NSString *)QRStr {
+    //创建过滤器
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    //过滤器恢复默认
+    [filter setDefaults];
+    //将NSString格式转化成NSData格式
+    NSData *data = [QRStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    
+    [filter setValue:data forKeyPath:@"inputMessage"];
+    //获取二维码过滤器生成的二维码
+    CIImage *image = [filter outputImage];
+    return [PackagMet createNonInterpolatedUIImageFormCIImage:image size:65.0];
+}
+
+// 指定View生成图片
++ (UIImage *)PackagSnapshotSingleView:(UIView *)view {
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(view.bounds.size.width+1.5, view.bounds.size.height), NO, 3.0);
+    
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 @end
