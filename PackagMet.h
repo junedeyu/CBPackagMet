@@ -455,6 +455,12 @@ NS_ASSUME_NONNULL_BEGIN
 // 网络请求错误码解释
 + (NSString *)PackagShowErrorWithCode:(NSError * _Nonnull)error;
 
+/**
+ *获取活动controller
+ *return controller 当前活动controller
+ */
++ (UIViewController *)activityViewController;
+
 @end
 
 NS_ASSUME_NONNULL_END

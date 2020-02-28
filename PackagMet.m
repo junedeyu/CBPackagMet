@@ -8,7 +8,7 @@
 
 #define kScreenSizes [UIScreen mainScreen].bounds.size
 #define MBHUD_Size CGSizeMake(90., 90.)
-#define rootNavVC (UINavigationController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController]
+//#define rootNavVC (UINavigationController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController]
 #define CB_KeyWindow [[[UIApplication sharedApplication] delegate] window]
 #define HWColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
 #define HWColorAlp(r, g, b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
@@ -34,6 +34,7 @@
 #import "SSKeychain.h"
 #import <AVFoundation/AVFoundation.h>
 #import <sys/utsname.h> // 获取手机型号
+#import <sys/sysctl.h>
 
 static PackagMet *_instance ;
 @implementation PackagMet
@@ -184,7 +185,7 @@ static PackagMet *_instance ;
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }]];
-    [rootNavVC presentViewController:alert animated:YES completion:nil];
+    [[PackagMet activityViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 /**
@@ -196,7 +197,7 @@ static PackagMet *_instance ;
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:str preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:name ? name : @"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
     }]];
-    [rootNavVC presentViewController:alert animated:YES completion:nil];
+    [[PackagMet activityViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 // 只有一个确认按钮
@@ -205,7 +206,7 @@ static PackagMet *_instance ;
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         click();
     }]];
-    [rootNavVC presentViewController:alert animated:YES completion:nil];
+    [[PackagMet activityViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 // 取消和确认按钮
@@ -230,7 +231,7 @@ static PackagMet *_instance ;
     
     [alert addAction:cancelAction];
     [alert addAction:sureAction];
-    [rootNavVC presentViewController:alert animated:YES completion:nil];
+    [[PackagMet activityViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 //时间计算/S
@@ -1512,6 +1513,29 @@ static PackagMet *_instance ;
             break;
     }
     return errorMsg;
+}
+
++ (UIViewController*)activityViewController {
+    return [PackagMet topViewControllerWithRootViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+}
+
++ (UIViewController*)topViewControllerWithRootViewController:(UIViewController*)rootViewController {
+    if ([rootViewController isKindOfClass:[UITabBarController class]]) {
+        
+        UITabBarController* tabBarController = (UITabBarController*)rootViewController;
+        return [PackagMet topViewControllerWithRootViewController:tabBarController.selectedViewController];
+    } else if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        
+        UINavigationController* navigationController = (UINavigationController*)rootViewController;
+        return [PackagMet topViewControllerWithRootViewController:navigationController.visibleViewController];
+    } else if (rootViewController.presentedViewController) {
+        
+        UIViewController* presentedViewController = rootViewController.presentedViewController;
+        return [PackagMet topViewControllerWithRootViewController:presentedViewController];
+    } else {
+        
+        return rootViewController;
+    }
 }
 
 @end
