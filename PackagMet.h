@@ -461,6 +461,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (UIViewController *)activityViewController;
 
+// 更改约束的比例值
++ (void)PackagMetChangeMultiplierOfConstraint:(NSLayoutConstraint *)constraint multiplier:(CGFloat)multiplier;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -14,7 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - CBPackagMet (1.0.7):
+  - CBPackagMet (1.0.9):
     - AFNetworking
     - MBProgressHUD
   - MBProgressHUD (1.2.0)
@@ -32,7 +32,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  CBPackagMet: 69db98ecfcc93d7707dbb420fd21f7f6672df7a7
+  CBPackagMet: fb866687e05b224b1b9aea7a20e3cfcf9e1a7d04
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
 
 PODFILE CHECKSUM: 3384708c95e8469ce9315539e4f44f9a25b3424e

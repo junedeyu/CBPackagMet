@@ -20,7 +20,7 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [PackagMet showHUDWithKeyWindowWithString:@"我是提示信息"];
-//    [PackagMet initAlertViewShowStr:@"弹窗提示"];
+    [PackagMet initAlertViewShowStr:@"弹窗提示"];
 }
 
 @end

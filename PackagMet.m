@@ -242,7 +242,7 @@ static PackagMet *_instance ;
     NSDate *nd = [NSDate dateWithTimeIntervalSince1970: [string doubleValue]];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     if (Str == nil) {
-        [dateFormat setDateFormat:@"yyy-MM-dd"];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
     }else{
         [dateFormat setDateFormat:Str];
     }
@@ -256,7 +256,7 @@ static PackagMet *_instance ;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     if (str == nil) {
-        [formatter setDateFormat:@"yyy-MM-dd"];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
     }else{
         [formatter setDateFormat:str];
     }
@@ -272,7 +272,7 @@ static PackagMet *_instance ;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     if (str == nil) {
-        [formatter setDateFormat:@"yyy-MM-dd HH:mm:ss"];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     }else{
         [formatter setDateFormat:str];
     }
@@ -286,7 +286,7 @@ static PackagMet *_instance ;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     if (str == nil) {
-        [formatter setDateFormat:@"yyy-MM-dd"];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
     }else{
         [formatter setDateFormat:str];
     }
@@ -1543,6 +1543,16 @@ static PackagMet *_instance ;
         
         return rootViewController;
     }
+}
+
+// 更改约束的比例值
++ (void)PackagMetChangeMultiplierOfConstraint:(NSLayoutConstraint *)constraint multiplier:(CGFloat)multiplier {
+    [NSLayoutConstraint deactivateConstraints:@[constraint]];
+    NSLayoutConstraint *newConstraint = [NSLayoutConstraint constraintWithItem:constraint.firstItem attribute:constraint.firstAttribute relatedBy:constraint.relation toItem:constraint.secondItem attribute:constraint.secondAttribute multiplier:multiplier constant:constraint.constant];
+    newConstraint.priority = constraint.priority;
+    newConstraint.shouldBeArchived = constraint.shouldBeArchived;
+    newConstraint.identifier = constraint.identifier;
+    [NSLayoutConstraint activateConstraints:@[newConstraint]];
 }
 
 @end

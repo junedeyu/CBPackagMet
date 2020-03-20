@@ -452,6 +452,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (UIImage *)PackagSnapshotSingleView:(UIView *)view;
 
+// 网络请求错误码解释
++ (NSString *)PackagShowErrorWithCode:(NSError * _Nonnull)error;
+
 @end
 
 NS_ASSUME_NONNULL_END
