@@ -1037,13 +1037,16 @@ static PackagMet *_instance ;
 + (NSString *)stringWithUDID {
 //    NSUUID * uuid = [[UIDevice currentDevice] identifierForVendor];
 //    return uuid.UUIDString;
-    NSString * currentDeviceUUIDStr = [SSKeychain passwordForService:@"com.teenysoft.ts"account:@"uuid"];
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *identifier = [infoDictionary objectForKey:@"CFBundleIdentifier"];
+    
+    NSString * currentDeviceUUIDStr = [SSKeychain passwordForService:identifier account:@"uuid"];
     if (currentDeviceUUIDStr == nil || [currentDeviceUUIDStr isEqualToString:@""]) {
         NSUUID * currentDeviceUUID  = [UIDevice currentDevice].identifierForVendor;
         currentDeviceUUIDStr = currentDeviceUUID.UUIDString;
 //        currentDeviceUUIDStr = [currentDeviceUUIDStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
 //        currentDeviceUUIDStr = [currentDeviceUUIDStr lowercaseString];
-        [SSKeychain setPassword:currentDeviceUUIDStr forService:@"com.teenysoft.ts"account:@"uuid"];
+        [SSKeychain setPassword:currentDeviceUUIDStr forService:identifier account:@"uuid"];
     }
     return currentDeviceUUIDStr;
 }
