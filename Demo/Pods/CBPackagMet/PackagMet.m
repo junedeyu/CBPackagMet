@@ -8,7 +8,7 @@
 
 #define kScreenSizes [UIScreen mainScreen].bounds.size
 #define MBHUD_Size CGSizeMake(90., 90.)
-#define rootNavVC (UINavigationController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController]
+//#define rootNavVC (UINavigationController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController]
 #define CB_KeyWindow [[[UIApplication sharedApplication] delegate] window]
 #define HWColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
 #define HWColorAlp(r, g, b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
@@ -34,6 +34,7 @@
 #import "SSKeychain.h"
 #import <AVFoundation/AVFoundation.h>
 #import <sys/utsname.h> // 获取手机型号
+#import <sys/sysctl.h>
 
 static PackagMet *_instance ;
 @implementation PackagMet
@@ -184,7 +185,7 @@ static PackagMet *_instance ;
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }]];
-    [rootNavVC presentViewController:alert animated:YES completion:nil];
+    [[PackagMet activityViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 /**
@@ -196,7 +197,7 @@ static PackagMet *_instance ;
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:str preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:name ? name : @"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
     }]];
-    [rootNavVC presentViewController:alert animated:YES completion:nil];
+    [[PackagMet activityViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 // 只有一个确认按钮
@@ -205,7 +206,7 @@ static PackagMet *_instance ;
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         click();
     }]];
-    [rootNavVC presentViewController:alert animated:YES completion:nil];
+    [[PackagMet activityViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 // 取消和确认按钮
@@ -230,7 +231,7 @@ static PackagMet *_instance ;
     
     [alert addAction:cancelAction];
     [alert addAction:sureAction];
-    [rootNavVC presentViewController:alert animated:YES completion:nil];
+    [[PackagMet activityViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 //时间计算/S
@@ -241,7 +242,7 @@ static PackagMet *_instance ;
     NSDate *nd = [NSDate dateWithTimeIntervalSince1970: [string doubleValue]];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     if (Str == nil) {
-        [dateFormat setDateFormat:@"yyy-MM-dd"];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
     }else{
         [dateFormat setDateFormat:Str];
     }
@@ -255,7 +256,7 @@ static PackagMet *_instance ;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     if (str == nil) {
-        [formatter setDateFormat:@"yyy-MM-dd"];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
     }else{
         [formatter setDateFormat:str];
     }
@@ -271,7 +272,7 @@ static PackagMet *_instance ;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     if (str == nil) {
-        [formatter setDateFormat:@"yyy-MM-dd HH:mm:ss"];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     }else{
         [formatter setDateFormat:str];
     }
@@ -285,7 +286,7 @@ static PackagMet *_instance ;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     if (str == nil) {
-        [formatter setDateFormat:@"yyy-MM-dd"];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
     }else{
         [formatter setDateFormat:str];
     }
@@ -326,10 +327,11 @@ static PackagMet *_instance ;
     if (self = [super init])
     {
         ProgressHud = [[MBProgressHUD alloc] initWithView:views.view];
+        ProgressHud.contentColor = [UIColor whiteColor];
+        ProgressHud.bezelView.blurEffectStyle = UIBlurEffectStyleDark;
         ProgressHud.minSize = MBHUD_Size;
         ProgressHud.label.font = [UIFont systemFontOfSize:13];
         [views.view addSubview:ProgressHud];
-        ProgressHud.backgroundColor = HWColorAlp(0, 0, 0, 0.3);
         ProgressHud.label.text = strTitle;
     }
     return self;
@@ -340,7 +342,9 @@ static PackagMet *_instance ;
 {
     if (self = [super init])
     {
-        ProgressHud = [MBProgressHUD showHUDAddedTo:CB_KeyWindow animated:YES];;
+        ProgressHud = [MBProgressHUD showHUDAddedTo:CB_KeyWindow animated:YES];
+        ProgressHud.contentColor = [UIColor whiteColor];
+        ProgressHud.bezelView.blurEffectStyle = UIBlurEffectStyleDark;
         ProgressHud.minSize = MBHUD_Size;
         ProgressHud.label.font = [UIFont systemFontOfSize:13];
         ProgressHud.label.text = strTitle;
@@ -367,8 +371,10 @@ static PackagMet *_instance ;
                string:(NSString *)labelT
 {
     MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithView:view.view];
-    
+    HUD.contentColor = [UIColor whiteColor];
+    HUD.bezelView.blurEffectStyle = UIBlurEffectStyleDark;
     [view.view addSubview:HUD];
+    
     HUD.label.text = labelT;
     HUD.mode = MBProgressHUDModeText;
     
@@ -400,6 +406,8 @@ static PackagMet *_instance ;
 + (void)showHUDWithKeyWindowWithString:(NSString *)labelT
 {
     MBProgressHUD * HUD = [[MBProgressHUD alloc] initWithView:CB_KeyWindow];
+    HUD.contentColor = [UIColor whiteColor];
+    HUD.bezelView.blurEffectStyle = UIBlurEffectStyleDark;
     
     [CB_KeyWindow addSubview:HUD];
     
@@ -1029,16 +1037,13 @@ static PackagMet *_instance ;
 + (NSString *)stringWithUDID {
 //    NSUUID * uuid = [[UIDevice currentDevice] identifierForVendor];
 //    return uuid.UUIDString;
-    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-    NSString *identifier = [infoDictionary objectForKey:@"CFBundleIdentifier"];
-    
-    NSString * currentDeviceUUIDStr = [SSKeychain passwordForService:identifier account:@"uuid"];
+    NSString * currentDeviceUUIDStr = [SSKeychain passwordForService:@"com.teenysoft.ts"account:@"uuid"];
     if (currentDeviceUUIDStr == nil || [currentDeviceUUIDStr isEqualToString:@""]) {
         NSUUID * currentDeviceUUID  = [UIDevice currentDevice].identifierForVendor;
         currentDeviceUUIDStr = currentDeviceUUID.UUIDString;
 //        currentDeviceUUIDStr = [currentDeviceUUIDStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
 //        currentDeviceUUIDStr = [currentDeviceUUIDStr lowercaseString];
-        [SSKeychain setPassword:currentDeviceUUIDStr forService:identifier account:@"uuid"];
+        [SSKeychain setPassword:currentDeviceUUIDStr forService:@"com.teenysoft.ts"account:@"uuid"];
     }
     return currentDeviceUUIDStr;
 }
@@ -1515,6 +1520,39 @@ static PackagMet *_instance ;
             break;
     }
     return errorMsg;
+}
+
++ (UIViewController*)activityViewController {
+    return [PackagMet topViewControllerWithRootViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+}
+
++ (UIViewController*)topViewControllerWithRootViewController:(UIViewController*)rootViewController {
+    if ([rootViewController isKindOfClass:[UITabBarController class]]) {
+        
+        UITabBarController* tabBarController = (UITabBarController*)rootViewController;
+        return [PackagMet topViewControllerWithRootViewController:tabBarController.selectedViewController];
+    } else if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        
+        UINavigationController* navigationController = (UINavigationController*)rootViewController;
+        return [PackagMet topViewControllerWithRootViewController:navigationController.visibleViewController];
+    } else if (rootViewController.presentedViewController) {
+        
+        UIViewController* presentedViewController = rootViewController.presentedViewController;
+        return [PackagMet topViewControllerWithRootViewController:presentedViewController];
+    } else {
+        
+        return rootViewController;
+    }
+}
+
+// 更改约束的比例值
++ (void)PackagMetChangeMultiplierOfConstraint:(NSLayoutConstraint *)constraint multiplier:(CGFloat)multiplier {
+    [NSLayoutConstraint deactivateConstraints:@[constraint]];
+    NSLayoutConstraint *newConstraint = [NSLayoutConstraint constraintWithItem:constraint.firstItem attribute:constraint.firstAttribute relatedBy:constraint.relation toItem:constraint.secondItem attribute:constraint.secondAttribute multiplier:multiplier constant:constraint.constant];
+    newConstraint.priority = constraint.priority;
+    newConstraint.shouldBeArchived = constraint.shouldBeArchived;
+    newConstraint.identifier = constraint.identifier;
+    [NSLayoutConstraint activateConstraints:@[newConstraint]];
 }
 
 @end

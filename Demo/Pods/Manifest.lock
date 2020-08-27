@@ -1,20 +1,20 @@
 PODS:
-  - AFNetworking (3.2.1):
-    - AFNetworking/NSURLSession (= 3.2.1)
-    - AFNetworking/Reachability (= 3.2.1)
-    - AFNetworking/Security (= 3.2.1)
-    - AFNetworking/Serialization (= 3.2.1)
-    - AFNetworking/UIKit (= 3.2.1)
-  - AFNetworking/NSURLSession (3.2.1):
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.1)
-  - AFNetworking/Security (3.2.1)
-  - AFNetworking/Serialization (3.2.1)
-  - AFNetworking/UIKit (3.2.1):
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
-  - CBPackagMet (1.0.9):
+  - CBPackagMet (1.1.1):
     - AFNetworking
     - MBProgressHUD
   - MBProgressHUD (1.2.0)
@@ -31,10 +31,10 @@ SPEC REPOS:
     - MBProgressHUD
 
 SPEC CHECKSUMS:
-  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  CBPackagMet: fb866687e05b224b1b9aea7a20e3cfcf9e1a7d04
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  CBPackagMet: 21e7b5a05c7e021353c17adcf1c674966f6785b8
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
 
 PODFILE CHECKSUM: 3384708c95e8469ce9315539e4f44f9a25b3424e
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.9.0.beta.2

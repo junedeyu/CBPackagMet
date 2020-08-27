@@ -455,6 +455,15 @@ NS_ASSUME_NONNULL_BEGIN
 // 网络请求错误码解释
 + (NSString *)PackagShowErrorWithCode:(NSError * _Nonnull)error;
 
+/**
+ *获取活动controller
+ *return controller 当前活动controller
+ */
++ (UIViewController *)activityViewController;
+
+// 更改约束的比例值
++ (void)PackagMetChangeMultiplierOfConstraint:(NSLayoutConstraint *)constraint multiplier:(CGFloat)multiplier;
+
 @end
 
 NS_ASSUME_NONNULL_END

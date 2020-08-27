@@ -203,7 +203,7 @@ static PackagMet *_instance ;
 // 只有一个确认按钮
 + (void)PackagAlertOnlySureViewMsg:(NSString *)msg SureBlock:(void(^)(void))click {
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         click();
     }]];
     [[PackagMet activityViewController] presentViewController:alert animated:YES completion:nil];
