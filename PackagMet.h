@@ -281,30 +281,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param filename 存储的文件名
  */
 + (NSString *)getFilePathOnLocation:(NSString *)filename;
-/**
- *  获取返回数据的Key
- */
-+ (NSString *)getDataWithData:(NSArray *)dataAry Key :(NSString *)key;
 
-/**
- 返回字典形式的数据 key值全为小写
- 
- @param rowsAry 传入请求下来的大字典
- @param fieldsAry 描述key
- @return 出后后的数组 直接KVC 搞定
- */
-+ (NSArray *)getDataLowercaseWithData:(NSArray *)rowsAry fields:(NSArray *)fieldsAry ;
-
-/**
- 返回字典形式的数据 key值为原生大小
- 
- @param rowsAry 传入请求下来的大字典
- @param fieldsAry 描述key
- @return 出后后的数组 直接KVC 搞定
- */
-+ (NSArray *)getPrimDataWithData:(NSArray *)rowsAry fields:(NSArray *)fieldsAry;
-
-+ (NSString *)getDoubleFromString:(NSString *)string numberOfxiaoshu:(NSInteger )num;
 /**
  *  文件读取
  */
@@ -406,11 +383,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 当前App版本号
 + (NSString *)version;
-
-/**
- 检测更新
- */
-+ (void)checkForUpdates;
 
 // 时间比较 时间 1 >= 时间2 返回YES
 + (BOOL)compareOneDay:(NSDate *)oneDay withAnotherDay:(NSDate *)anotherDay;

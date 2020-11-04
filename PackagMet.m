@@ -673,7 +673,7 @@ static PackagMet *_instance ;
     NSDate *currentTimeDate = [NSDate date];    //  现在时间
     //获取时间
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate *getTimeDate = [formatter dateFromString:timeStr];
     
     // 现在时间 与 获取时间 之差
@@ -795,111 +795,6 @@ static PackagMet *_instance ;
     //    文件保存路径
     NSString *filePath = [path stringByAppendingString:[NSString stringWithFormat:@"/%@", filename]];
     return filePath;
-}
-
-/**
- *  获取返回数据的Key
- */
-+ (NSString *)getDataWithData:(NSArray *)dataAry Key:(NSString *)key
-{
-    NSString *keyValue = @"";
-    if (dataAry.count > 0) {
-        for (NSInteger index = 0; index < dataAry.count; index ++) {
-            NSDictionary *dataDict = [PackagMet changeWithlowercaseString:[dataAry objectAtIndex:index]];
-            NSString *capTion = [dataDict objectForKey:@"caption"];
-            if ([capTion isEqualToString:[key lowercaseString]]) {
-                NSArray *keyAry = [dataDict allKeys];
-                for (NSString *subkey in keyAry) {
-                    if ([[dataDict objectForKey:subkey] isEqualToString:[key lowercaseString]] && ![subkey isEqualToString:@"caption"]) {
-                        keyValue = subkey;
-                        return [keyValue uppercaseString];
-                    }
-                }
-            }
-        }
-    }
-    return @"";
-}
-
-
-/**
- 返回字典形式的数据 key值全为小写
- 
- @param rowsAry 传入请求下来的大字典
- @param fieldsAry 描述key
- @return 出后后的数组 直接KVC 搞定
- */
-+ (NSArray *)getDataLowercaseWithData:(NSArray *)rowsAry fields:(NSArray *)fieldsAry {
-    // 直接处理为字典数组 赋给model 一句话搞定避免空的双重循环
-    NSMutableArray * ary = [NSMutableArray array];
-    for (NSDictionary * dict in rowsAry) {
-        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
-        int index = 0;
-        for (NSDictionary * Fields in fieldsAry) {
-            [dic setObject:dict[[NSString stringWithFormat:@"F%d",index]] forKey:[Fields[@"Caption"] lowercaseString]];
-            index ++;
-        }
-        [ary addObject:dic];
-    }
-    return ary ;
-}
-
-/**
- 返回字典形式的数据 key值为原生大小
- 
- @param rowsAry 传入请求下来的大字典
- @param fieldsAry 描述key
- @return 出后后的数组 直接KVC 搞定
- */
-+ (NSArray *)getPrimDataWithData:(NSArray *)rowsAry fields:(NSArray *)fieldsAry {
-    // 直接处理为字典数组 赋给model 一句话搞定避免空的双重循环
-    NSMutableArray * ary = [NSMutableArray array];
-    for (NSDictionary * dict in rowsAry) {
-        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
-        int index = 0;
-        for (NSDictionary * Fields in fieldsAry) {
-            [dic setObject:dict[[NSString stringWithFormat:@"F%d",index]] forKey:Fields[@"Caption"]];
-            index ++;
-        }
-        [ary addObject:dic];
-    }
-    return ary ;
-}
-
-/**
- *  将字典内容转换为小写
- *
- *  @param dic 要转换的字典
- *
- *  @return 转换结果
- */
-+ (NSDictionary *)changeWithlowercaseString:(NSDictionary *)dic
-{
-    NSData * data =  [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
-    NSString * str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    str = [str lowercaseString];
-    return [self ParseDictJsonWithStr:str];
-}
-
-+ (NSString *)getDoubleFromString:(NSString *)string numberOfxiaoshu:(NSInteger )num {
-    NSString *aaa;
-    switch (num) {
-        case 2:
-            aaa = [NSString stringWithFormat:@"%.2f", [string floatValue]];
-            break;
-            
-        case 4:
-            aaa = [NSString stringWithFormat:@"%.4f", [string floatValue]];
-            break;
-            
-        case 8:
-            aaa = [NSString stringWithFormat:@"%.8f", [string floatValue]];
-            break;
-            
-        default:
-            break;
-    }
-    return aaa;
 }
 
 // 文件写入
@@ -1134,28 +1029,6 @@ static PackagMet *_instance ;
     return appCurVersion;
 }
 
-+ (void)checkForUpdates {
-    NSString *content = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://www.teenysoft.com/App/Client/Ver.txt"]] encoding:NSUTF8StringEncoding];
-    NSDictionary * info = [PackagMet ParseDictJsonWithStr:content][@"iOS"];
-    // 比较
-    NSString * newVer = [info[@"ver"] stringByReplacingOccurrencesOfString:@"." withString:@""];
-    NSString * nowVer = [[PackagMet version] stringByReplacingOccurrencesOfString:@"." withString:@""];
-//    NSDate * netDate = [PackagMet checkDateTimeStr:nil nsdateStr:info[@"date"]];
-//    BOOL flag = [PackagMet compareOneDay:[PackagMet checkDateNowTimeStr:nil nsdate:[NSDate date]] withAnotherDay:netDate];
-    if ([nowVer integerValue] < [newVer integerValue]) {
-        NSString * date = [PackagMet checkNowTimeStr:@"yyyy-MM-dd" date:[NSDate date]];
-        if ([[kUserDef valueForKey:@"TSUpdates"] isEqualToString:date]) {
-            return;
-        }
-        [kUserDef setValue:date forKey:@"TSUpdates"];
-        [PackagMet PackagAlertTwoBtnViewTitle:@"App更新提示" msg:[NSString stringWithFormat:@"App有新的版本更新\n支撑AppServer版本为:%@",info[@"server"]] sureTitle:@"更新" sureStyle:0 cancelTitle:@"忽略" cancelStyle:2 SureBlock:^{
-            NSString * urlStr = @"https://itunes.apple.com/cn/app/id1093339326?l=zh&ls=1&mt=8";
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr]];
-        } cancelBlock:^{
-        }];
-    }
-}
-
 // 当前时间要超过h上架时间，才弹窗 时间 1 >= 时间2 返回YES
 + (BOOL)compareOneDay:(NSDate *)oneDay withAnotherDay:(NSDate *)anotherDay {
     NSComparisonResult result = [oneDay compare:anotherDay];
@@ -1224,7 +1097,7 @@ static PackagMet *_instance ;
     NSString *head=[valstr substringToIndex:flag - 1];
     NSString *foot=[valstr substringFromIndex:flag];
     if (head.length>13) {
-        return@"数值太大（最大支持13位整数），无法处理";
+        return @"数值太大（最大支持13位整数），无法处理";
     }
     //处理整数部分
     NSMutableArray *ch=[[NSMutableArray alloc]init];
