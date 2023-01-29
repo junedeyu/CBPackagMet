@@ -14,7 +14,7 @@ s.source_files = 'PackagMet.h','PackagMet.m','SSKeychain.h','SSKeychain.m'
 # 'CBPackagMet/*.{h,m}'
 s.frameworks = 'Foundation','UIKit'
 s.dependency 'MBProgressHUD'
-s.dependency 'AFNetworking'
-s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+# s.dependency 'AFNetworking'
+# s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end

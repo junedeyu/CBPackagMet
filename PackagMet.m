@@ -24,7 +24,7 @@
 
 #import "PackagMet.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
-#import <AFNetworking/AFNetworking.h>
+//#import <AFNetworking/AFNetworking.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <net/if.h>
@@ -892,21 +892,21 @@ static PackagMet *_instance ;
 
 + (void)getReachability {
     // 开始网络监视器
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        switch (status) {
-            case AFNetworkReachabilityStatusUnknown: [self showHUDWithKeyWindowWithString:@"请检查网络"];
-                break;
-            case AFNetworkReachabilityStatusNotReachable: [self showHUDWithKeyWindowWithString:@"请检查网络"];
-                break;
-            case AFNetworkReachabilityStatusReachableViaWWAN: [self showHUDWithKeyWindowWithString:@"正在使用流量"];
-                break;
-            case AFNetworkReachabilityStatusReachableViaWiFi: [self showHUDWithKeyWindowWithString:@"网络已连接"];
-                break;
-            default:
-                break;
-        }
-    }];
+//    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+//    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+//        switch (status) {
+//            case AFNetworkReachabilityStatusUnknown: [self showHUDWithKeyWindowWithString:@"请检查网络"];
+//                break;
+//            case AFNetworkReachabilityStatusNotReachable: [self showHUDWithKeyWindowWithString:@"请检查网络"];
+//                break;
+//            case AFNetworkReachabilityStatusReachableViaWWAN: [self showHUDWithKeyWindowWithString:@"正在使用流量"];
+//                break;
+//            case AFNetworkReachabilityStatusReachableViaWiFi: [self showHUDWithKeyWindowWithString:@"网络已连接"];
+//                break;
+//            default:
+//                break;
+//        }
+//    }];
 }
 
 /**
