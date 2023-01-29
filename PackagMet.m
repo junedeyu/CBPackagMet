@@ -238,6 +238,9 @@ static PackagMet *_instance ;
 + (NSString *)checkOrderDate:(id)date
                       string:(nullable NSString *)Str {
     NSString *string = [NSString stringWithFormat:@"%@",date] ;
+    if (string.length < 3) {
+        return Str;
+    }
     string = [string substringWithRange:NSMakeRange(0, string.length - 3)];
     NSDate *nd = [NSDate dateWithTimeIntervalSince1970: [string doubleValue]];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -267,18 +270,10 @@ static PackagMet *_instance ;
     return NowTime;
 }
 
-+ (NSDate *)checkDateNowTimeStr:(nullable NSString *)str
-                           date:(NSDate *)date {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    if (str == nil) {
-        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    }else{
-        [formatter setDateFormat:str];
-    }
++ (NSDate *)checkDateNowTimeDate:(NSDate *)date {
     NSTimeZone *zone = [NSTimeZone systemTimeZone];
     NSInteger interval = [zone secondsFromGMTForDate: date];
-    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
+    NSDate *localeDate = [date dateByAddingTimeInterval: interval];
     return localeDate;
 }
 
@@ -294,12 +289,15 @@ static PackagMet *_instance ;
     return date;
 }
 
+/// 格式化字符串时间 yyyy-MM-dd
 + (NSString *)metCheckWithTimeString:(NSString *)timeStr
 {
     NSDateFormatter * format = [[NSDateFormatter alloc] init];
     [format setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    [format setDateFormat:@"yyyy-MM-dd"];
+    [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate * date = [format dateFromString:timeStr];
+    
+    [format setDateFormat:@"yyyy-MM-dd"];
     NSString * str = [format stringFromDate:date];
     return str;
 }

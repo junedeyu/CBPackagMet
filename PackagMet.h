@@ -130,8 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return NSDate
  */
-+ (NSDate *)checkDateNowTimeStr:(nullable NSString *)str
-                         date:(NSDate *)date;
++ (NSDate *)checkDateNowTimeDate:(NSDate *)date;
 
 /**
  格式化时间 ，将字符串时间转换为 NSDate 格式
@@ -143,6 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDate *)checkDateTimeStr:(nullable NSString *)str
                    dateStr:(NSString *)dateStr ;
 
+/// 格式化字符串时间 yyyy-MM-dd
 + (NSString *)metCheckWithTimeString:(NSString *)timeStr;
 
 /**

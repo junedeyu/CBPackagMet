@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name = "CBPackagMet"
-s.version = '1.1.4'
+s.version = '1.1.5'
 s.license = 'MIT'
 # Copyright (c2019) CBin. All rights reserved
 s.summary = "常用方法封装"
