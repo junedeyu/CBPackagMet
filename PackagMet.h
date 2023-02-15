@@ -125,7 +125,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  获取当前时间
  *
- *  @param str   @"yyyy-MM-dd HH:mm:ss"
  *  @param date NSDate
  *
  *  @return NSDate

@@ -307,7 +307,7 @@ static PackagMet *_instance ;
  *  计算前后一个月
  *
  *  @param date  要计算的时间
- *  @param Flag 正数为后一个月 负数为前一个月
+ *  @param flag 正数为后一个月 负数为前一个月
  *
  *  @return 计算后的时间
  */
@@ -840,7 +840,7 @@ static PackagMet *_instance ;
  *
  *  @param color    需要改变成的颜色
  *  @param totalStr 总的字符串
- *  @param subArray 需要改变颜色的文字数组(要是有相同的 只取第一个)
+ *  @param subAry 需要改变颜色的文字数组(要是有相同的 只取第一个)
  *
  *  @return 生成的富文本
  */
